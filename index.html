@@ -2,26 +2,29 @@
 <html>
   <head>
     <title>Terminal.js Demo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <style>
       body {
-        background: black;
-        color:      white;
+        background: #000;
+        color:     hsl(139, 94%, 39%);
 
         width:  100%;
         height: 100%;
 
-        padding: 0;
+        padding: 1em;
         margin:  0;
+        line-height: 1.5em;
 
         box-sizing: border-box;
       }
     </style>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
     <script src="http://avgp.github.io/webcomponentsjs/webcomponents.min.js"></script>
     <link rel="import" href="fake-terminal.html">
   </head>
   <body>
-    <h1>Terminal.js Demo</h1>
-    <fake-terminal>guest@terminal.js &sim; &gt;</fake-terminal>
+    <fake-terminal class="terminalPrompt">h4ck@terminal &sim; &gt;</fake-terminal>
     <script>
       var cmds = {};
 
@@ -29,16 +32,70 @@
         var output = "<div>" +
                      "<ul>" +
                      "<li><strong>help</strong> - display this help.</li>" +
-                     "<li><strong>hello NAME</strong> - displays a greeting for NAME.</li>" +
-                     "<li><strong>weather LOCATION</strong> - show weather for LOCATION</li>" +
-                     "</ul></div>";
+                     "<li><strong>ping [URL]</strong> - measure the response time of a server.</li>" +
+                     "<li><strong>[tool] install</strong> - install a tool.</li>" +
+                      "<li><strong>[tool] [URL]</strong> - run a tool on a server.</li>" +
+                     "</ul><p style='color:#4C564D;'>  Ping komodobank.com</p><br> </div>";
         return output;
       };
 
-      cmds.hello = function(args) {
-        if(args.length < 2) return "<p>Hello. Why don't you tell me your name?</p>";
-        return "Hello " + args[1];
+      // cmds.install = function(args) {
+
+      //   var output = "<div>" +
+      //                "<ul>" +
+      //                "<li>Installed nmap</li>" +
+      //                "</ul><p style='color:#4C564D;'> // run nmap on the server</p></div>";
+      //   return output;
+      // };
+    cmds.runCommands = {} //store commands that have been run
+
+     cmds.ping = function() {
+        var output = "<div>" +
+                     "<ul>" +            
+                     "<p>Response time:</p>" +
+                     "<li>1.4s</li>" +
+                     "<li>1.6s</li>" +
+                     "<li>1.5s</li>" +
+                     "</ul><p style='color:#4C564D;'> // rapid. what's installed on that server?<br>// first, install nmap</p></div>";
+        return output;
       };
+
+
+      // cmds.hello = function(args) {
+      //   if(args.length < 2) return "<p>Hello. Why don't you tell me your name?</p>";
+      //   return "Hello " + args[1];
+      // };
+      
+      cmds.nmap = function(args) {
+        var ip = "1.2.3.4";
+        var dl = "install";
+        //args[0] = nmap
+        //args[1] = install
+        if (args.length < 2) {
+          return "please give an argument"
+        }
+        console.log("argument:" + $.trim(args[1]) + ":")
+        switch ($.trim(args[1])) {
+          case "install":
+            this.runCommands["nmapinstall"] = true
+            return "<p>installed</p><br><br><p style='color:#4C564D;'>// Now run nmap on komodobank.com</p>";
+          case "komodobank.com":
+            if (!testIfCommandRun("nmapinstall")) {
+              return "Please install nmap";
+            } else return "PORT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;STATE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SERVICE&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;VERSION<br>"+
+            "80/tcp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;open&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;http&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nginx<br>"+
+            "443/tcp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;open&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ssl/http&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nginx<br>"+
+            "3306/tcp&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;open&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;mysql";
+          default:
+              return "incorrect"; 
+        }
+        
+      };
+      cmds.mysql = function(args) {
+        //this one will be trickier...
+        //needs to update the 
+        return "<h3>----- WELCOME TO MYSQL -----<h3>"
+      }
 
       cmds.weather = function(args) {
         args.shift();
@@ -59,6 +116,15 @@
         document.querySelector("fake-terminal").onload = function() {
           this.commands = cmds;
         }
+      }
+
+
+      function testIfCommandRun(command) {
+        console.log("testing: ", cmds.runCommands[command], " command: ", command)
+        if (cmds.runCommands[command] == undefined || cmds.runCommands[command] != true) {
+          return false
+        } 
+        return true
       }
     </script>
   </body>
