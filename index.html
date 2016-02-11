@@ -7,7 +7,7 @@
     <style>
       body {
         background: #000;
-        color:     hsl(139, 94%, 39%);
+        color:     white;
 
         width:  100%;
         height: 100%;
@@ -30,12 +30,13 @@
 
       cmds.help = function() {
         var output = "<div>" +
+                     "<p><strong>ff</strong></p>" +
                      "<ul>" +
                      "<li><strong>help</strong> - display this help.</li>" +
-                     "<li><strong>ping [URL]</strong> - measure the response time of a server.</li>" +
-                     "<li><strong>[tool] install</strong> - install a tool.</li>" +
-                      "<li><strong>[tool] [URL]</strong> - run a tool on a server.</li>" +
-                     "</ul><p style='color:#4C564D;'>  Ping komodobank.com</p><br> </div>";
+                     "<li><strong>ping [URL]</strong> - see if a server is online (e.g. ping google.com)</li>" +
+                     "<li><strong>[tool] install</strong> - install a tool. (e.g. hacker install)</li>" +
+                      "<li><strong>[tool] [URL]</strong> - run a tool on a server. (e.g. hacker google.com)</li>" +
+                     "</ul><p style='color:red;'>// use ping to see if komodobank.com is online</p></div>";
         return output;
       };
 
@@ -51,12 +52,10 @@
 
      cmds.ping = function() {
         var output = "<div>" +
-                     "<ul>" +            
-                     "<p>Response time:</p>" +
-                     "<li>1.4s</li>" +
-                     "<li>1.6s</li>" +
-                     "<li>1.5s</li>" +
-                     "</ul><p style='color:#4C564D;'> // rapid. what's installed on that server?<br>// first, install nmap</p></div>";
+                     "<ul>" +     
+                     "<p>server status: &nbsp;&nbsp;ONLINE</p>"+       
+                     "<p>response time: &nbsp;&nbsp;1.5 seconds</p><br>" +
+                    "<p style='color:red;'>// it's online, let's see what it's running<br><strong>// install the nmap tool</strong><br>// type help if you're stuck</p> "// rapid. what's installed on that server?<br>// first, install nmap</p></div>";
         return output;
       };
 

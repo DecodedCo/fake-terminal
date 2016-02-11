@@ -11,7 +11,7 @@ fake-terminal::shadow #terminal {
 }
 
 .help{
-    color:#4C564D !important;
+    color:red !important;
 }
 
 /**
